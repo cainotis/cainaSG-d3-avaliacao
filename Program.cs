@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 
 using autenticator.Translation;
+using autenticator.Logging;
 
 namespace autenticator {
 	public class Program {
 
 		private static Translator translator = new Translator();
+		private static Logger logger = new Logger();
+		 
 		private static bool auth = false;
+
 		public static void Main(){
 			bool run = true;
 			while(run){
@@ -21,7 +25,6 @@ namespace autenticator {
 			}
 		}
 
-		
 		private static bool Unauthenticated()
 		{
 			string? option;
