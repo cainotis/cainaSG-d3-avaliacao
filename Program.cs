@@ -2,19 +2,22 @@
 using System;
 using System.Collections.Generic;
 
-using autenticator.Translation;
+using autenticator.Configuration;
 using autenticator.Logging;
+using autenticator.Translation;
 
 namespace autenticator {
 	public class Program {
 
-		private static Translator translator = new Translator();
-		private static Logger logger = new Logger();
-		 
+		private static Config config = ConfigManager.Loader();
+		private static Translator translator = new Translator(lang: config.Language);
+		private static Logger logger = new Logger(log_path: config.LogPath, log_level: config.LogLevel);
+
 		private static bool auth = false;
 
 		public static void Main(){
 			bool run = true;
+			// logger.info("system started");
 			while(run){
 				if(auth){
 					run = Authentified();

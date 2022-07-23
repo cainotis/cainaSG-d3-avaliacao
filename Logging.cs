@@ -19,10 +19,10 @@ namespace autenticator.Logging
 			ERROR = 3
 		}
 
-		public Logger(string spath = "auth.log", string slevel = "INFO")
+		public Logger(string log_path = "auth.log", string log_level = "INFO")
 		{	
-			path = spath;
-			if(Enum.TryParse<LoggingLevels>(slevel, out level) == false)
+			path = log_path;
+			if(Enum.TryParse<LoggingLevels>(log_level, out level) == false)
 				level = LoggingLevels.INFO;
 		}
 
