@@ -1,1 +1,6 @@
-{"LogLevel":"INFO","LogPath":"auth.log","DataBaseConnection":"", "Language": "PT"}
+{
+    "LogLevel":"INFO",
+    "LogPath":"auth.log",
+    "ConnectionString":"Data Source=auth.db",
+    "Language": "PT"
+}

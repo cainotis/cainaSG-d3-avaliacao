@@ -1,0 +1,9 @@
+CREATE TABLE users(
+	id INTEGER NOT NULL PRIMARY KEY,
+	name TEXT NOT NULL,
+	email TEXT NOT NULL,
+	password TEXT NOT NULL,
+	CONSTRAINT PK_user PRIMARY KEY (id),
+	CONSTRAINT UC_user_email UNIQUE (email)
+);
+

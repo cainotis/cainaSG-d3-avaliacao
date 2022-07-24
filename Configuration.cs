@@ -1,15 +1,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace autenticator.Configuration
+namespace authenticator.Configuration
 {
 	public class Config
 	{
 		public string LogLevel {get; set;} = "";
 		public string LogPath { get; set; } = "";
-		public string DataBaseConnection { get; set; } = "";
+		public string ConnectionString { get; set; } = "";
 		public string Language { get; set; } = "";
-	
 	}
 
 	public class ConfigManager
@@ -20,7 +19,7 @@ namespace autenticator.Configuration
 			Config? config = JsonSerializer.Deserialize<Config>(jsonString);
 
 			if(config == null){
-				throw new 	ArgumentNullException("config.json not found");
+				throw new ArgumentNullException("config.json not found");
 			}
 
 			return config;
