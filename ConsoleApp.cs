@@ -4,7 +4,7 @@ using authenticator.Translation;
 using authenticator.Repositories;
 using authenticator.Models;
 
-using Microsoft.Extensions.Identity.Core;
+using Microsoft.AspNetCore.Identity;
 
 namespace authenticator.ConsoleApp
 {
@@ -15,16 +15,21 @@ namespace authenticator.ConsoleApp
 		private Translator translator;
 		private Logger logger;
 		private UserRepository user_repository;
+		private PasswordHasher<string> hasher;
 
-		private bool auth = false;
 		private User? user_logged;
 
-		public App(Config config, Translator translator, Logger logger, UserRepository user_repository)
+		public App(Config config,
+				   Translator translator,
+				   Logger logger,
+				   UserRepository user_repository,
+                   PasswordHasher<string> hasher)
 		{
 			this.config = config;
 			this.translator = translator;
 			this.logger = logger;
 			this.user_repository = user_repository;
+			this.hasher = hasher;
 		}
 
 		public void run()
@@ -59,11 +64,11 @@ namespace authenticator.ConsoleApp
 					if (email != null && password != null)
 					{
 						User? user = user_repository!.GetByEmail(email);
-						if (user != null && user.password == password)
+						if (user != null && hasher.VerifyHashedPassword(user.email, user.password, password) == PasswordVerificationResult.Success)
 						{
 							user_logged = user;
 							Console.WriteLine(translator.Get("ACCESS_GRANTED"));
-							logger.info(string.Format("login user {0} name {1}", user.userId, user.name));
+							logger.info(string.Format("login user: {0} name: {1}", user.userId, user.name));
 							break;
 						}
 					}
@@ -86,8 +91,8 @@ namespace authenticator.ConsoleApp
 			switch (option)
 			{
 				case "1":
-					auth = false;
-                    logger.info(string.Format("logout user {0} name {1}", user_logged!.userId, user_logged.name));
+                    logger.info(string.Format("logout user: {0} name: {1}", user_logged!.userId, user_logged.name));
+					user_logged = null;
 					break;
 				case "2":
 					return false;

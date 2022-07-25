@@ -1,9 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Data.SQLite;
 
+using Microsoft.AspNetCore.Identity;
 
 using authenticator.Configuration;
 using authenticator.Logging;
@@ -21,19 +19,22 @@ namespace authenticator {
 			Translator translator = new Translator(lang: config.Language);
 			Logger logger = new Logger(log_path: config.LogPath, log_level: config.LogLevel);
 			UserRepository user_repository;
+            PasswordHasher<string> hasher = new PasswordHasher<string>();
 
-			// logger.info("system started");
+			logger.info("system started");
+
 			using (SQLiteConnection conn = new SQLiteConnection(config.ConnectionString))
 			{
 				conn.Open();
-                // logger.info("connected to database");
+                logger.info("connected to database");
                 user_repository = new UserRepository(connection:conn);
 				
                 App app = new App(
 					config: config,
 					translator: translator,
 					logger: logger,
-                    user_repository: user_repository
+                    user_repository: user_repository,
+					hasher: hasher
 				);
 
 				app.run();
